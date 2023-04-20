@@ -1,0 +1,73 @@
+﻿@model PagedList.IPagedList<Model.EF.User>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Users - Admin - Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Users list
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Users lists</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <a href="/admin/Users/Create" class="btn btn-primary">Add user</a>
+            <br />
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="row_@item.UserID">
+                            <td>@item.UserID</td>
+                            <td>@item.UserName</td>
+                            <td>@item.Password</td>
+                            <td>@item.Name</td>
+                            <td>@item.Address</td>
+                            <td>@item.Email</td>
+                            <td>@item.Phone</td>
+                            <td>
+                                <a href="/admin/Users/Edit/@item.UserID" class="btn btn-outline-primary btn-sm">Edit</a>
+                                <button class="btn btn-outline-danger btn-sm">
+                                    @Ajax.ActionLink("Delete", "Delete", new { @id = item.UserID }, new AjaxOptions
+                               {
+                                   Confirm = "Do you want delete this row ?",
+                                   OnComplete = "$('#row_" + @item.UserID + "').remove()",
+                                   HttpMethod = "Delete"
+                               })
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+</div>
