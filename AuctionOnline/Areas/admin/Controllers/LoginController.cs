@@ -29,6 +29,7 @@ namespace AuctionOnline.Areas.admin.Controllers
                     var userSession = new UsersLogin();
                     userSession.UserName = user.UserName;
                     userSession.UserID = user.UserID;
+
                     Session.Add(CommonConstants.USER_SESSION, userSession);
                     return RedirectToAction("Index", "Home");
                 }
